@@ -1,0 +1,7 @@
+FROM langgenius/dify-api:1.15.0
+
+USER root
+
+RUN pip install --no-cache-dir --disable-pip-version-check "jieba==0.42.1"
+
+USER dify

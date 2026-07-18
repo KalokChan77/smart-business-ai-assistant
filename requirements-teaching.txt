@@ -1,0 +1,33 @@
+# Web API
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+python-multipart
+httpx
+sse-starlette
+
+# Database, cache, migrations, security
+sqlalchemy
+alembic
+psycopg[binary]
+redis
+PyJWT[crypto]
+pwdlib[argon2]
+
+# LLM and agents
+dashscope
+langchain
+langgraph
+langchain-deepseek
+langchain-community
+
+# RAG and document parsing
+numpy
+pypdf
+python-docx
+faiss-cpu
+
+# Tests
+pytest
+pytest-asyncio

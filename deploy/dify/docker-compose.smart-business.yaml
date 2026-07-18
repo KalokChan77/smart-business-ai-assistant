@@ -1,0 +1,20 @@
+x-dify-api-with-jieba: &dify-api-with-jieba
+  image: smart-business/dify-api:1.15.0-jieba
+  build:
+    context: .
+    dockerfile: Dockerfile.api-jieba
+
+services:
+  api:
+    <<: *dify-api-with-jieba
+
+  api_websocket:
+    <<: *dify-api-with-jieba
+    volumes:
+      - ./volumes/app/storage:/app/api/storage
+
+  worker:
+    <<: *dify-api-with-jieba
+
+  worker_beat:
+    <<: *dify-api-with-jieba

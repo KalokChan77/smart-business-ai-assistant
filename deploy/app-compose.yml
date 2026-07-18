@@ -1,0 +1,46 @@
+name: smart-business-ai
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: smart-business-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${APP_POSTGRES_DB}
+      POSTGRES_USER: ${APP_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${APP_POSTGRES_PASSWORD}
+    ports:
+      - "127.0.0.1:${APP_POSTGRES_PORT}:5432"
+    volumes:
+      - app_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${APP_POSTGRES_USER} -d ${APP_POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 5s
+
+  redis:
+    image: redis:6-alpine
+    container_name: smart-business-redis
+    restart: unless-stopped
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
+      - --requirepass
+      - ${APP_REDIS_PASSWORD}
+    ports:
+      - "127.0.0.1:${APP_REDIS_PORT}:6379"
+    volumes:
+      - app_redis_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a '${APP_REDIS_PASSWORD}' ping | grep PONG"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 5s
+
+volumes:
+  app_postgres_data:
+  app_redis_data:
