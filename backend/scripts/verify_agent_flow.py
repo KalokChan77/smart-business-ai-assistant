@@ -14,6 +14,7 @@ from app.ai.models import AIRun
 from app.auth.security import JwtTokenService, PasswordService, TokenType
 from app.cache.client import create_redis_client
 from app.conversations.models import Conversation
+from app.core.asyncio_compat import run_async
 from app.core.config import Settings
 from app.db.session import Database
 from app.users.models import Role, User
@@ -248,4 +249,4 @@ async def verify() -> None:
 
 
 if __name__ == "__main__":
-    asyncio.run(verify())
+    run_async(verify())

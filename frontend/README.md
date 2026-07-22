@@ -2,6 +2,18 @@
 
 Vue 3 + TypeScript + Vite 业务前端。浏览器只访问本前端与 FastAPI，不直接调用 DeepSeek、LangGraph、Dify 或携带任何模型 / 低代码平台密钥。
 
+## Docker 运行（推荐交付方式）
+
+根目录 `compose.yml` 使用本目录的多阶段 `Dockerfile`：Node 负责生产构建，
+Nginx 仅保留静态产物，并把 `/api` 反向代理到 `backend:8000`。因此浏览器和
+前端镜像都不需要后端密钥或后端绝对地址。
+
+```bash
+docker compose up -d --build --wait
+```
+
+默认访问 `http://127.0.0.1:5173`。本机 Vite 启动方式仍保留用于日常开发。
+
 ## 技术栈
 
 - Vue 3

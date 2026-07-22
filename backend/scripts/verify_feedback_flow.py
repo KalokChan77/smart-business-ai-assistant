@@ -19,6 +19,7 @@ from app.conversations.models import Conversation, MessageRole
 from app.conversations.repository import ConversationsRepository
 from app.conversations.schemas import ConversationCreateRequest
 from app.conversations.service import ConversationService
+from app.core.asyncio_compat import run_async
 from app.core.config import Settings
 from app.db.session import Database
 from app.feedback.models import AIFeedback, FeedbackRating
@@ -473,4 +474,4 @@ async def verify() -> None:
 
 
 if __name__ == "__main__":
-    asyncio.run(verify())
+    run_async(verify())

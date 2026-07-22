@@ -5,6 +5,7 @@ from uuid import uuid4
 
 import httpx
 
+from app.core.asyncio_compat import run_async
 from app.core.config import Settings
 
 
@@ -162,4 +163,4 @@ async def verify() -> None:
 
 
 if __name__ == "__main__":
-    asyncio.run(verify())
+    run_async(verify())

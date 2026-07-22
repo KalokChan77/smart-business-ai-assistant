@@ -2,12 +2,26 @@
 
 Vue3 对应的服务端：认证、租户 RBAC、会话、AI SSE、LangGraph Agent、Dify 知识/文档/TTS、客服辅助与统计。
 
+## Docker 运行（推荐交付方式）
+
+根目录 `compose.yml` 会构建本目录的 `Dockerfile`，在容器启动时自动执行
+Alembic 迁移、幂等初始化演示账号，再以非 root 用户启动 Uvicorn：
+
+```bash
+docker compose up -d --build --wait
+docker compose logs -f backend
+```
+
+容器通过服务名 `postgres`、`redis` 访问依赖；知识文档保存在
+`smart-business-ai_app_knowledge_data` 数据卷。本机 Python 环境仅用于开发和测试。
+
 ## Python 环境
 
 固定 Python 3.12。项目根目录虚拟环境解释器为：
 
 ```text
 .venv/bin/python
+.venv\Scripts\python.exe  # Windows
 ```
 
 ## 安装
@@ -50,7 +64,21 @@ cd backend
 ../.venv/bin/uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
+Windows 直接启动后端时请使用兼容入口，确保异步 psycopg 使用 Selector 事件循环：
+
+```powershell
+Set-Location backend
+..\.venv\Scripts\python.exe -m scripts.run_dev_server --port 18000
+```
+
 或使用根目录一键脚本：`./scripts/dev_up.sh`
+
+Windows 推荐在项目根目录运行：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\dev_up.ps1
+```
 
 - Swagger：`http://127.0.0.1:8000/docs`
 - 存活：`http://127.0.0.1:8000/api/v1/health`

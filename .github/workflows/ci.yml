@@ -53,6 +53,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Shell syntax
-        run: bash -n scripts/*.sh deploy/dify/*.sh
-      - name: Business Compose config
+        run: bash -n scripts/*.sh backend/docker-entrypoint.sh deploy/dify/*.sh
+      - name: Native-development Compose config
         run: docker compose --env-file .env.example -f deploy/app-compose.yml config --quiet
+      - name: Full-stack Compose config
+        run: docker compose --env-file .env.example -f compose.yml config --quiet
+      - name: Dockerfile checks
+        run: |
+          docker build --check -f backend/Dockerfile backend
+          docker build --check -f frontend/Dockerfile frontend

@@ -1,3 +1,4 @@
+import os
 import stat
 from pathlib import Path
 from uuid import UUID, uuid4
@@ -47,9 +48,15 @@ async def test_storage_creates_private_root_tenant_and_file_modes(tmp_path: Path
         content=b"%PDF content",
     )
 
-    assert file_mode(root) == 0o700
-    assert file_mode(root / str(tenant_id)) == 0o700
-    assert file_mode(root / key) == 0o600
+    if os.name == "nt":
+        # Windows exposes inherited NTFS ACLs rather than POSIX permission bits.
+        assert root.is_dir()
+        assert (root / str(tenant_id)).is_dir()
+        assert (root / key).is_file()
+    else:
+        assert file_mode(root) == 0o700
+        assert file_mode(root / str(tenant_id)) == 0o700
+        assert file_mode(root / key) == 0o600
 
 
 async def test_storage_atomically_overwrites_existing_file_content(tmp_path: Path) -> None:
@@ -74,7 +81,8 @@ async def test_storage_atomically_overwrites_existing_file_content(tmp_path: Pat
     assert same_key == key
     assert await storage.read(key) == b"new content"
     assert list((root / str(tenant_id)).glob(f".{document_id}.txt.*")) == []
-    assert file_mode(root / key) == 0o600
+    if os.name != "nt":
+        assert file_mode(root / key) == 0o600
 
 
 async def test_storage_reads_saved_file_content(tmp_path: Path) -> None:

@@ -1,6 +1,10 @@
 # 业务依赖 Compose
 
-`app-compose.yml` 只启动**业务** PostgreSQL 与 Redis，与 Dify 数据卷隔离。
+完整业务栈优先使用项目根目录 `compose.yml`，它同时管理前端、后端、
+PostgreSQL、Redis 和三个命名数据卷。
+
+`app-compose.yml` 只启动**业务** PostgreSQL 与 Redis，供前后端直接在本机运行
+时使用，并与 Dify 数据卷隔离。不要和完整容器模式同时启动。
 
 ## 启动
 

@@ -20,6 +20,7 @@ if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
 from app.auth.security import PasswordService
+from app.core.asyncio_compat import run_async
 from app.core.config import Settings
 from app.db.session import Database
 from app.users.demo_bootstrap import DEFAULT_DEMO_TENANT_ID, DemoTenantBootstrapper
@@ -88,4 +89,4 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    run_async(main())

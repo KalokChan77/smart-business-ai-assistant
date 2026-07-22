@@ -3,6 +3,7 @@ from getpass import getpass
 from uuid import UUID, uuid4
 
 from app.auth.security import PasswordService
+from app.core.asyncio_compat import run_async
 from app.core.config import Settings
 from app.db.session import Database
 from app.users.repository import UsersRepository
@@ -50,4 +51,4 @@ async def bootstrap() -> None:
 
 
 if __name__ == "__main__":
-    asyncio.run(bootstrap())
+    run_async(bootstrap())
