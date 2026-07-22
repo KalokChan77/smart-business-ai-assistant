@@ -57,7 +57,7 @@ jobs:
       - name: Native-development Compose config
         run: docker compose --env-file .env.example -f deploy/app-compose.yml config --quiet
       - name: Full-stack Compose config
-        run: docker compose --env-file .env.example -f compose.yml config --quiet
+        run: APP_ENV_FILE=.env.example docker compose --env-file .env.example -f compose.yml config --quiet
       - name: Dockerfile checks
         run: |
           docker build --check -f backend/Dockerfile backend

@@ -49,7 +49,7 @@ services:
     container_name: smart-business-backend
     restart: unless-stopped
     env_file:
-      - .env
+      - ${APP_ENV_FILE:-.env}
     environment:
       DATABASE_URL: postgresql+psycopg://${APP_POSTGRES_USER}:${APP_POSTGRES_PASSWORD}@postgres:5432/${APP_POSTGRES_DB}
       REDIS_URL: redis://:${APP_REDIS_PASSWORD}@redis:6379/0
